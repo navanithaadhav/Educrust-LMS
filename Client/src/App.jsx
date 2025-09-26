@@ -17,6 +17,7 @@ import StudentEnrollment from './pages/educator/StudentEnrollment'
 import MyEnrollments from './pages/student/MyEnrollments'
 import Navbar from './component/student/Navbar'
 import "quill/dist/quill.snow.css";
+import QuizApp from './pages/student/QuizApp'
 
 
 
@@ -38,6 +39,8 @@ const isEducatorRoute=useMatch('/educator/*')
         <Route path='/course-list' element={<CourseList />} />
         <Route path='/course-list/:input' element={<CourseList />} />
         <Route path='/course/:id' element={<CourseDetails />} />
+        <Route path='/course/quiz' element={<QuizApp />} />
+        
         <Route path='/my-enrollments' element={<MyEnrollments/>} />
         <Route path='/player/:courseId' element={<Players />} />
         <Route path='/loading/:path' element={<Loading />} />

@@ -1,14 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { AppContext } from '../../context/AppContext'
 import Loading from '../../component/student/Loading'
 import { assets } from '../../assets/assets'
 import humanizeDuration from 'humanize-duration';
 import Footeronly from '../../component/student/Footeronly'
 import Youtube from 'react-youtube'
+import QuizApp from './QuizApp'
 
 
 const CourseDetails = () => {
+
+  const navigate = useNavigate()
   const { id } = useParams()
   const [courseData, setCourseData] = useState(null)
   const [openSections, setOpenSections] = useState({})
@@ -37,7 +40,6 @@ const CourseDetails = () => {
 
 
   return courseData ? (
-
     <>
       <div className='flex md:flex-row flex-col-reverse gap-30 relative items-start justify-between md:px-15 px-8 md:pt-10 pt-10 text-left'>
         <div className='absolute top-0 left-0 w-full h-section-height -z-1 bg-gradient-to-b from-cyan-100/70'></div>
@@ -149,12 +151,20 @@ text-gray-500'>
                 <li>Certificate of completion.</li>
               </ul>
             </div>
-          </div>
+            
+        
+          
+         
         </div>
+        <button 
+          onClick={() => navigate('/course/quiz')}
+          className='md:mt-6 mt-4 w-full py-3 rounded bg-blue-600 text-white font-medium'> Quiz </button>
       </div>
-     <Footeronly />
+      
+      </div>
+       <Footeronly />
     </>
-  ) : <Loading />
+    ) : <Loading />;
 }
 
 export default CourseDetails
