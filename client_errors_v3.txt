@@ -1,0 +1,205 @@
+src/component/educator/Footer.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/component/educator/Navbar.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/component/educator/Navbar.tsx(4,10): error TS6133: 'Link' is declared but its value is never read.
+src/component/educator/Navbar.tsx(8,11): error TS6133: 'educatorData' is declared but its value is never read.
+src/component/educator/Navbar.tsx(10,13): error TS2339: Property 'userData' does not exist on type 'AppContextType | null'.
+src/component/educator/Navbar.tsx(10,23): error TS2339: Property 'backendUrl' does not exist on type 'AppContextType | null'.
+src/component/educator/Navbar.tsx(10,23): error TS6133: 'backendUrl' is declared but its value is never read.
+src/component/educator/Navbar.tsx(10,35): error TS2339: Property 'setUserData' does not exist on type 'AppContextType | null'.
+src/component/educator/Navbar.tsx(10,35): error TS6133: 'setUserData' is declared but its value is never read.
+src/component/educator/Navbar.tsx(10,48): error TS2339: Property 'setIsLoggedIn' does not exist on type 'AppContextType | null'.
+src/component/educator/Navbar.tsx(10,48): error TS6133: 'setIsLoggedIn' is declared but its value is never read.
+src/component/educator/Navbar.tsx(25,20): error TS2304: Cannot find name 'UserButton'.
+src/component/educator/Sidebar.tsx(10,9): error TS2531: Object is possibly 'null'.
+src/component/student/CallToAction.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/component/student/Card.tsx(1,17): error TS6133: 'useContext' is declared but its value is never read.
+src/component/student/Connectus.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/component/student/CountUp.tsx(5,3): error TS7031: Binding element 'to' implicitly has an 'any' type.
+src/component/student/CountUp.tsx(13,3): error TS7031: Binding element 'onStart' implicitly has an 'any' type.
+src/component/student/CountUp.tsx(14,3): error TS7031: Binding element 'onEnd' implicitly has an 'any' type.
+src/component/student/CountUp.tsx(34,29): error TS7006: Parameter 'num' implicitly has an 'any' type.
+src/component/student/CountUp.tsx(52,19): error TS2339: Property 'textContent' does not exist on type 'never'.
+src/component/student/CountUp.tsx(103,21): error TS2339: Property 'textContent' does not exist on type 'never'.
+src/component/student/CountUp.tsx(116,12): error TS2552: Cannot find name 'stats'. Did you mean 'status'?
+src/component/student/CountUp.tsx(116,25): error TS7031: Binding element 'from' implicitly has an 'any' type.
+src/component/student/CountUp.tsx(116,31): error TS7031: Binding element 'to' implicitly has an 'any' type.
+src/component/student/CountUp.tsx(116,35): error TS7031: Binding element 'label' implicitly has an 'any' type.
+src/component/student/CountUp.tsx(116,44): error TS7006: Parameter 'idx' implicitly has an 'any' type.
+src/component/student/CountUp.tsx(131,18): error TS2739: Type '{ from: any; to: any; duration: number; separator: string; className: string; }' is missing the following properties from type '{ to: any; from?: number | undefined; direction?: string | undefined; delay?: number | undefined; duration?: number | undefined; className?: string | undefined; startWhen?: boolean | undefined; separator?: string | undefined; onStart: any; onEnd: any; }': onStart, onEnd
+src/component/student/CourseSection.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/component/student/CourseSection.tsx(9,8): error TS2339: Property 'allCourses' does not exist on type 'AppContextType | null'.
+src/component/student/CourseSection.tsx(18,37): error TS7006: Parameter 'course' implicitly has an 'any' type.
+src/component/student/CourseSection.tsx(18,44): error TS7006: Parameter 'index' implicitly has an 'any' type.
+src/component/student/Explore.tsx(2,1): error TS6133: 'React' is declared but its value is never read.
+src/component/student/Explore.tsx(17,20): error TS6133: 'isMenuOpen' is declared but its value is never read.
+src/component/student/Explore.tsx(17,20): error TS7031: Binding element 'isMenuOpen' implicitly has an 'any' type.
+src/component/student/Explore.tsx(17,32): error TS7031: Binding element 'setIsMenuOpen' implicitly has an 'any' type.
+src/component/student/Footer.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/component/student/Footer.tsx(24,29): error TS2552: Cannot find name 'navigate'. Did you mean 'navigator'?
+src/component/student/Footeronly.tsx(11,35): error TS2552: Cannot find name 'navigate'. Did you mean 'navigator'?
+src/component/student/Header.tsx(6,1): error TS6133: 'CallToAction' is declared but its value is never read.
+src/component/student/Header.tsx(9,1): error TS6133: 'Connectus' is declared but its value is never read.
+src/component/student/Header.tsx(25,9): error TS6133: 'stats' is declared but its value is never read.
+src/component/student/Header.tsx(44,11): error TS2741: Property 'data' is missing in type '{}' but required in type '{ data: any; }'.
+src/component/student/Header.tsx(133,30): error TS2339: Property 'name' does not exist on type '{ id: number; logo: string; }'.
+src/component/student/Header.tsx(135,32): error TS2339: Property 'name' does not exist on type '{ id: number; logo: string; }'.
+src/component/student/Loading.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/component/student/Login.tsx(1,1): error TS6133: 'assets' is declared but its value is never read.
+src/component/student/Login.tsx(2,1): error TS6133: 'useNavigate' is declared but its value is never read.
+src/component/student/Login.tsx(3,1): error TS6133: 'useContext' is declared but its value is never read.
+src/component/student/Login.tsx(4,1): error TS6133: 'AppContext' is declared but its value is never read.
+src/component/student/Login.tsx(5,1): error TS6133: 'axios' is declared but its value is never read.
+src/component/student/Login.tsx(6,1): error TS6133: 'toast' is declared but its value is never read.
+src/component/student/Navbar.tsx(1,36): error TS7016: Could not find a declaration file for module 'react-scroll'. 'C:/Users/navan/OneDrive/Desktop/Educrust LMS - Copy/Client/node_modules/react-scroll/modules/index.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/react-scroll` if it exists or add a new declaration (.d.ts) file containing `declare module 'react-scroll';`
+src/component/student/Navbar.tsx(2,1): error TS6192: All imports in import declaration are unused.
+src/component/student/Navbar.tsx(5,10): error TS6133: 'Link' is declared but its value is never read.
+src/component/student/Navbar.tsx(12,11): error TS6133: 'isCourseListPage' is declared but its value is never read.
+src/component/student/Navbar1.tsx(8,36): error TS7016: Could not find a declaration file for module 'react-scroll'. 'C:/Users/navan/OneDrive/Desktop/Educrust LMS - Copy/Client/node_modules/react-scroll/modules/index.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/react-scroll` if it exists or add a new declaration (.d.ts) file containing `declare module 'react-scroll';`
+src/component/student/Navbar1.tsx(9,34): error TS6133: 'FaUserCircle' is declared but its value is never read.
+src/component/student/Navbar1.tsx(16,11): error TS2339: Property 'userData' does not exist on type 'AppContextType | null'.
+src/component/student/Navbar1.tsx(16,21): error TS2339: Property 'backendUrl' does not exist on type 'AppContextType | null'.
+src/component/student/Navbar1.tsx(16,33): error TS2339: Property 'setUserData' does not exist on type 'AppContextType | null'.
+src/component/student/Navbar1.tsx(16,46): error TS2339: Property 'setIsLoggedIn' does not exist on type 'AppContextType | null'.
+src/component/student/Navbar1.tsx(38,19): error TS18046: 'error' is of type 'unknown'.
+src/component/student/Navbar1.tsx(52,19): error TS18046: 'error' is of type 'unknown'.
+src/component/student/Navbar1.tsx(115,10): error TS2739: Type '{}' is missing the following properties from type '{ isMenuOpen: any; setIsMenuOpen: any; }': isMenuOpen, setIsMenuOpen
+src/component/student/Rating.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/component/student/Rating.tsx(1,17): error TS6133: 'use' is declared but its value is never read.
+src/component/student/Rating.tsx(3,18): error TS7031: Binding element 'initialRating' implicitly has an 'any' type.
+src/component/student/Rating.tsx(3,32): error TS7031: Binding element 'onRate' implicitly has an 'any' type.
+src/component/student/Rating.tsx(5,25): error TS7006: Parameter 'value' implicitly has an 'any' type.
+src/component/student/SearchBar.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/component/student/SearchBar.tsx(6,21): error TS7031: Binding element 'data' implicitly has an 'any' type.
+src/component/student/SearchBar.tsx(11,26): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/component/student/TestimonialSection.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/component/student/TestimonialSection.tsx(6,11): error TS6133: 'testimonial' is declared but its value is never read.
+src/component/student/TestimonialSection.tsx(6,13): error TS2339: Property 'testimonial' does not exist on type 'AppContextType | null'.
+src/pages/educator/AddCourse.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/educator/AddCourse.tsx(25,26): error TS7006: Parameter 'action' implicitly has an 'any' type.
+src/pages/educator/AddCourse.tsx(25,34): error TS7006: Parameter 'chapterId' implicitly has an 'any' type.
+src/pages/educator/AddCourse.tsx(29,179): error TS2339: Property 'chapterOrder' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(30,22): error TS2322: Type '{ chapterId: `${string}-${string}-${string}-${string}-${string}`; chapterTitle: string; chapterContent: never[]; collapsed: boolean; chapterOrder: any; }' is not assignable to type 'never'.
+src/pages/educator/AddCourse.tsx(30,35): error TS2322: Type '{ chapterId: `${string}-${string}-${string}-${string}-${string}`; chapterTitle: string; chapterContent: never[]; collapsed: boolean; chapterOrder: any; }' is not assignable to type 'never'.
+src/pages/educator/AddCourse.tsx(33,44): error TS2339: Property 'chapterId' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(35,19): error TS2345: Argument of type 'any[]' is not assignable to parameter of type 'SetStateAction<never[]>'.
+  Type 'any[]' is not assignable to type 'never[]'.
+    Type 'any' is not assignable to type 'never'.
+src/pages/educator/AddCourse.tsx(35,41): error TS2339: Property 'chapterId' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(35,69): error TS2698: Spread types may only be created from object types.
+src/pages/educator/AddCourse.tsx(35,91): error TS2339: Property 'collapsed' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(41,26): error TS7006: Parameter 'action' implicitly has an 'any' type.
+src/pages/educator/AddCourse.tsx(41,34): error TS7006: Parameter 'chapterId' implicitly has an 'any' type.
+src/pages/educator/AddCourse.tsx(41,45): error TS7006: Parameter 'lectureId' implicitly has an 'any' type.
+src/pages/educator/AddCourse.tsx(46,19): error TS2345: Argument of type 'any[]' is not assignable to parameter of type 'SetStateAction<never[]>'.
+  Type 'any[]' is not assignable to type 'never[]'.
+    Type 'any' is not assignable to type 'never'.
+src/pages/educator/AddCourse.tsx(46,41): error TS2339: Property 'chapterId' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(46,69): error TS2698: Spread types may only be created from object types.
+src/pages/educator/AddCourse.tsx(46,95): error TS2339: Property 'chapterContent' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(46,117): error TS7006: Parameter 'lec' implicitly has an 'any' type.
+src/pages/educator/AddCourse.tsx(53,7): error TS2322: Type 'Quill' is not assignable to type 'null'.
+src/pages/educator/AddCourse.tsx(63,29): error TS7006: Parameter 'chapterId' implicitly has an 'any' type.
+src/pages/educator/AddCourse.tsx(71,14): error TS2339: Property 'chapterId' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(73,47): error TS2339: Property 'chapterContent' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(73,78): error TS2339: Property 'chapterContent' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(75,12): error TS2339: Property 'chapterContent' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(91,9): error TS6133: 'removeLecture' is declared but its value is never read.
+src/pages/educator/AddCourse.tsx(91,26): error TS7006: Parameter 'chapterId' implicitly has an 'any' type.
+src/pages/educator/AddCourse.tsx(91,37): error TS7006: Parameter 'lectureId' implicitly has an 'any' type.
+src/pages/educator/AddCourse.tsx(92,17): error TS2345: Argument of type 'any[]' is not assignable to parameter of type 'SetStateAction<never[]>'.
+  Type 'any[]' is not assignable to type 'never[]'.
+    Type 'any' is not assignable to type 'never'.
+src/pages/educator/AddCourse.tsx(92,39): error TS2339: Property 'chapterId' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(92,67): error TS2698: Spread types may only be created from object types.
+src/pages/educator/AddCourse.tsx(92,93): error TS2339: Property 'chapterContent' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(92,115): error TS7006: Parameter 'lec' implicitly has an 'any' type.
+src/pages/educator/AddCourse.tsx(95,25): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/pages/educator/AddCourse.tsx(125,56): error TS2551: Property 'valu' does not exist on type 'EventTarget & HTMLInputElement'. Did you mean 'value'?
+src/pages/educator/AddCourse.tsx(134,44): error TS2345: Argument of type 'string' is not assignable to parameter of type 'SetStateAction<number>'.
+src/pages/educator/AddCourse.tsx(151,41): error TS18047: 'e.target.files' is possibly 'null'.
+src/pages/educator/AddCourse.tsx(151,41): error TS2345: Argument of type 'File' is not assignable to parameter of type 'SetStateAction<null>'.
+  Type 'File' provides no match for the signature '(prevState: null): null'.
+src/pages/educator/AddCourse.tsx(172,71): error TS2339: Property 'chapterId' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(172,198): error TS2339: Property 'collapsed' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(173,79): error TS2339: Property 'chapterTitle' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(175,32): error TS2339: Property 'chapterContent' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(176,69): error TS2339: Property 'chapterId' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(178,25): error TS2339: Property 'collapsed' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(180,28): error TS2339: Property 'chapterContent' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(180,48): error TS7006: Parameter 'lecture' implicitly has an 'any' type.
+src/pages/educator/AddCourse.tsx(180,57): error TS7006: Parameter 'lectureIndex' implicitly has an 'any' type.
+src/pages/educator/AddCourse.tsx(183,116): error TS2339: Property 'chapterId' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(188,39): error TS2554: Expected 3 arguments, but got 2.
+src/pages/educator/AddCourse.tsx(188,68): error TS2339: Property 'chapterId' does not exist on type 'never'.
+src/pages/educator/AddCourse.tsx(194,124): error TS2554: Expected 2 arguments, but got 1.
+src/pages/educator/Dashboard.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/educator/Dashboard.tsx(8,11): error TS2339: Property 'currency' does not exist on type 'AppContextType | null'.
+src/pages/educator/Dashboard.tsx(12,22): error TS2345: Argument of type '{ totalEarnings: number; enrolledStudentsData: { courseTitle: string; student: { _id: string; name: string; imageUrl: string; }; }[]; totalCourses: number; }' is not assignable to parameter of type 'SetStateAction<null>'.
+  Type '{ totalEarnings: number; enrolledStudentsData: { courseTitle: string; student: { _id: string; name: string; imageUrl: string; }; }[]; totalCourses: number; }' provides no match for the signature '(prevState: null): null'.
+src/pages/educator/Dashboard.tsx(32,80): error TS2339: Property 'enrolledStudentsData' does not exist on type 'never'.
+src/pages/educator/Dashboard.tsx(39,80): error TS2339: Property 'totalCourses' does not exist on type 'never'.
+src/pages/educator/Dashboard.tsx(46,90): error TS2339: Property 'totalEarnings' does not exist on type 'never'.
+src/pages/educator/Dashboard.tsx(64,28): error TS2339: Property 'enrolledStudentsData' does not exist on type 'never'.
+src/pages/educator/Dashboard.tsx(64,54): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/pages/educator/Dashboard.tsx(64,60): error TS7006: Parameter 'index' implicitly has an 'any' type.
+src/pages/educator/Educator.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/pages/educator/MyCourses.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/educator/MyCourses.tsx(7,7): error TS2339: Property 'currency' does not exist on type 'AppContextType | null'.
+src/pages/educator/MyCourses.tsx(7,16): error TS2339: Property 'allCourses' does not exist on type 'AppContextType | null'.
+src/pages/educator/MyCourses.tsx(33,18): error TS2339: Property 'map' does not exist on type 'never'.
+src/pages/educator/MyCourses.tsx(33,23): error TS7006: Parameter 'course' implicitly has an 'any' type.
+src/pages/educator/StudentEnrollment.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/educator/StudentEnrollment.tsx(1,17): error TS6133: 'useContext' is declared but its value is never read.
+src/pages/educator/StudentEnrollment.tsx(4,1): error TS6133: 'AppContext' is declared but its value is never read.
+src/pages/educator/StudentEnrollment.tsx(13,25): error TS2345: Argument of type '{ student: { _id: string; name: string; imageUrl: string; }; courseTitle: string; purchaseDate: string; }[]' is not assignable to parameter of type 'SetStateAction<undefined>'.
+  Type '{ student: { _id: string; name: string; imageUrl: string; }; courseTitle: string; purchaseDate: string; }[]' provides no match for the signature '(prevState: undefined): undefined'.
+src/pages/educator/StudentEnrollment.tsx(33,31): error TS2339: Property 'map' does not exist on type 'never'.
+src/pages/educator/StudentEnrollment.tsx(33,36): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/pages/educator/StudentEnrollment.tsx(33,42): error TS7006: Parameter 'index' implicitly has an 'any' type.
+src/pages/Emailverify.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/pages/Login.tsx(11,10): error TS2339: Property 'backendUrl' does not exist on type 'AppContextType | null'.
+src/pages/Login.tsx(11,21): error TS2339: Property 'setIsLoggedIn' does not exist on type 'AppContextType | null'.
+src/pages/Login.tsx(11,36): error TS2339: Property 'getUserData' does not exist on type 'AppContextType | null'.
+src/pages/Login.tsx(17,34): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/pages/Login.tsx(50,23): error TS18046: 'error' is of type 'unknown'.
+src/pages/Login.tsx(50,56): error TS18046: 'error' is of type 'unknown'.
+src/pages/Resetpassword.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/pages/student/CourseDetails.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/student/CourseDetails.tsx(9,1): error TS6133: 'QuizApp' is declared but its value is never read.
+src/pages/student/CourseDetails.tsx(18,29): error TS6133: 'setIsAlreadyEnrolled' is declared but its value is never read.
+src/pages/student/CourseList.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/student/CourseList.tsx(1,17): error TS6133: 'use' is declared but its value is never read.
+src/pages/student/CourseList.tsx(7,1): error TS6133: 'Footer' is declared but its value is never read.
+src/pages/student/CourseList.tsx(13,10): error TS2339: Property 'allCourses' does not exist on type 'AppContextType | null'.
+src/pages/student/CourseList.tsx(21,46): error TS7006: Parameter 'course' implicitly has an 'any' type.
+src/pages/student/MyEnrollments.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/student/MyEnrollments.tsx(9,11): error TS2339: Property 'enrolledCourses' does not exist on type 'AppContextType | null'.
+src/pages/student/MyEnrollments.tsx(9,27): error TS2339: Property 'calculateCourseDuration' does not exist on type 'AppContextType | null'.
+src/pages/student/MyEnrollments.tsx(10,25): error TS6133: 'setProgressArray' is declared but its value is never read.
+src/pages/student/MyEnrollments.tsx(41,33): error TS7006: Parameter 'course' implicitly has an 'any' type.
+src/pages/student/MyEnrollments.tsx(41,41): error TS7006: Parameter 'index' implicitly has an 'any' type.
+src/pages/student/Players.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/student/Players.tsx(16,11): error TS2339: Property 'enrolledCourses' does not exist on type 'AppContextType | null'.
+src/pages/student/Players.tsx(16,28): error TS2339: Property 'calculateChapterTime' does not exist on type 'AppContextType | null'.
+src/pages/student/Players.tsx(19,26): error TS7006: Parameter 'course' implicitly has an 'any' type.
+src/pages/student/Players.tsx(30,26): error TS7006: Parameter 'index' implicitly has an 'any' type.
+src/pages/student/Players.tsx(31,51): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+src/pages/student/Players.tsx(41,35): error TS2339: Property 'courseContent' does not exist on type 'never'.
+src/pages/student/Players.tsx(41,54): error TS7006: Parameter 'chapter' implicitly has an 'any' type.
+src/pages/student/Players.tsx(41,63): error TS7006: Parameter 'index' implicitly has an 'any' type.
+src/pages/student/Players.tsx(45,68): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+src/pages/student/Players.tsx(51,76): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+src/pages/student/Players.tsx(53,46): error TS7006: Parameter 'lecture' implicitly has an 'any' type.
+src/pages/student/Players.tsx(53,55): error TS7006: Parameter 'i' implicitly has an 'any' type.
+src/pages/student/Players.tsx(78,8): error TS2739: Type '{}' is missing the following properties from type '{ initialRating: any; onRate: any; }': initialRating, onRate
+src/pages/student/Players.tsx(89,40): error TS2339: Property 'lectureUrl' does not exist on type 'never'.
+src/pages/student/Players.tsx(91,28): error TS2339: Property 'chapter' does not exist on type 'never'.
+src/pages/student/Players.tsx(91,49): error TS2339: Property 'lecture' does not exist on type 'never'.
+src/pages/student/Players.tsx(91,70): error TS2339: Property 'lectureTitle' does not exist on type 'never'.
+src/pages/student/Players.tsx(95,45): error TS2339: Property 'courseThumbnail' does not exist on type 'never'.
+src/pages/student/QuizApp.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/student/QuizApp.tsx(3,1): error TS6133: 'Navbar1' is declared but its value is never read.
+src/pages/student/QuizApp.tsx(91,25): error TS7006: Parameter 'option' implicitly has an 'any' type.
+src/pages/student/QuizApp.tsx(117,9): error TS6133: 'goHome' is declared but its value is never read.
