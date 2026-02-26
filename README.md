@@ -4,18 +4,28 @@
 Educrust LMS is an advanced Learning Management System designed to facilitate online education through a feature-rich platform. It provides an intuitive interface for educators and learners, optimizing the learning experience.
 
 ## Features
-- User-friendly interface for students and instructors
-- Course management and enrollment
-- Interactive quizzes and assessments
-- Progress tracking and reporting
-- Real-time communication tools
+- **Multi-role Authentication:** Secure access for Students, Educators, and Admins.
+- **Course Management:** Create and manage courses effortlessly.
+- **Video Players:** Integrated video players for effective course delivery.
+- **Quizzes:** Interactive quizzes to test knowledge and improve learning outcomes.
+- **Payments:** Integrated payment solutions using Stripe and Razorpay for course fees.
+- **AI Chatbot:** Provide instant support and answers to common queries.
+- **Certificates:** Generate and issue certificates upon course completion.
+- **Real-time Communication:** Engage with students and educators through seamless communication channels.
+- **Responsive Design:** A user-friendly interface that works on various devices.
+- **Docker Support:** Easy deployment and containerization for scalable applications.
 
 ## Tech Stack
-- Frontend: React.js, Redux
-- Backend: Node.js, Express
-- Database: MongoDB
-- Authentication: JWT
-- Containerization: Docker
+- **Frontend:** React, TypeScript  
+- **Backend:** Express  
+- **Database:** MongoDB with Mongoose  
+- **Authentication & Authorization:** Clerk for user management and multi-role authentication (Student, Educator, Admin)  
+- **Real-time Communication:** Socket.io  
+- **Payment Integration:** Stripe and Razorpay  
+- **Cloud Storage:** Cloudinary for managing media assets  
+- **Email Notifications:** Nodemailer  
+- **Authentication with Google:** Google Auth
+
 
 ## Architecture
 The system follows a microservices architecture ensuring scalability and maintainability. Core services focus on user management, course delivery, and reporting.
