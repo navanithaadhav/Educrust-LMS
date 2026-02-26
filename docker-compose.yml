@@ -3,7 +3,7 @@ services:
     build:
       context: ./Server
     ports:
-      - "5002:5002"
+      - "5000:5000"
     env_file:
       - ./Server/.env
     restart: always
@@ -12,7 +12,7 @@ services:
     build:
       context: ./Client
     ports:
-      - "5173:80"
+      - "80:80"
     restart: always
     depends_on:
       - server

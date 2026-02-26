@@ -9,6 +9,14 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    port: 8080,
+    host: true, // Listens on all IP addresses (0.0.0.0) so it's accessible from EC2 public IP
+  },
+  preview: {
+    port: 8080,
+    host: true,
+  },
   build: {
     rollupOptions: {
       output: {
