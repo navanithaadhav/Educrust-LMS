@@ -1,5 +1,5 @@
 import express from 'express';
-import { getDashboardData, getAllUsers, getAllCourses, deleteCourse, addUser, updateUserRole, updateCourse, adminEnrollUser, getAllReviews, deleteReview, updateReview, addCourse } from '../controllers/adminController.js';
+import { getDashboardData, getAllUsers, getAllCourses, deleteCourse, addUser, updateUserRole, updateCourse, adminEnrollUser, getAllReviews, deleteReview, updateReview, addCourse, getCertificateRequests, updateCertificateStatus } from '../controllers/adminController.js';
 import { uploadResource } from '../controllers/educatorController.js';
 import { protectUser } from '../middlewares/authMiddleware.js';
 import upload from '../configs/multer.js';
@@ -34,5 +34,7 @@ adminRouter.post('/upload-resource', upload.single('file'), protectUser, isAdmin
 adminRouter.get('/reviews', protectUser, isAdmin, getAllReviews);
 adminRouter.post('/delete-review', protectUser, isAdmin, deleteReview);
 adminRouter.post('/update-review', protectUser, isAdmin, updateReview);
+adminRouter.get('/certificate-requests', protectUser, isAdmin, getCertificateRequests);
+adminRouter.post('/update-certificate-status', protectUser, isAdmin, updateCertificateStatus);
 
 export default adminRouter;

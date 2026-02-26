@@ -1,4 +1,6 @@
 import express from "express";
+import { createServer } from "http";
+import { Server } from "socket.io";
 import cors from "cors";
 import "dotenv/config";
 import connectDB from "./configs/mongodb.js";
@@ -22,20 +24,25 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Security Middlewares
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: false, // For handling external images/assets
+}));
 app.use(compression());
-app.use(morgan('dev')); // Logging
+app.use(morgan('common')); // Use 'common' for production logging
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
+  windowMs: 15 * 60 * 1000,
+  max: 1000, // Increased for a real app
   standardHeaders: true,
   legacyHeaders: false,
 });
 app.use('/api', limiter);
 
-// Boot server inside async function to handle async startup steps safely
-const allowOrigins = ["http://localhost:5173"];
+// Allowed Origins handling
+const frontendUrls = process.env.CORS_ALLOWED_ORIGINS
+  ? process.env.CORS_ALLOWED_ORIGINS.split(',')
+  : ["http://localhost:5173", "http://localhost:5174"];
+
 app.use(express.json({
   limit: '100mb',
   verify: (req: any, res, buf) => {
@@ -44,7 +51,7 @@ app.use(express.json({
 }));
 app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 app.use(cookieParser());
-app.use(cors({ origin: allowOrigins, credentials: true }));
+app.use(cors({ origin: frontendUrls, credentials: true }));
 
 async function start() {
   try {
@@ -76,8 +83,41 @@ async function start() {
       });
     });
 
+    const httpServer = createServer(app);
 
-    const server = app.listen(PORT, () => {
+    // Setup Socket.io
+    const io = new Server(httpServer, {
+      cors: {
+        origin: frontendUrls,
+        credentials: true
+      }
+    });
+
+    io.on("connection", (socket) => {
+      console.log(`User connected: ${socket.id}`);
+
+      // Join a specific course room to receive chat/notifications
+      socket.on("join_course", (courseId) => {
+        socket.join(courseId);
+        console.log(`Socket ${socket.id} joined course: ${courseId}`);
+      });
+
+      // Handle chat messages in course
+      socket.on("send_message", (data) => {
+        io.to(data.courseId).emit("receive_message", data);
+      });
+
+      // Handle broadcast notifications
+      socket.on("send_notification", (data) => {
+        io.emit("receive_notification", data);
+      });
+
+      socket.on("disconnect", () => {
+        console.log(`User disconnected: ${socket.id}`);
+      });
+    });
+
+    const server = httpServer.listen(PORT, () => {
       console.log(`Server is running on port: ${PORT}`);
     });
     server.timeout = 600000; // 10 minutes timeout for handling large uploads

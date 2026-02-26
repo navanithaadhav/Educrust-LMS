@@ -13,7 +13,7 @@ const Navbar = () => {
 
         {/* Logo */}
         <div onClick={() => navigate('/')} className="flex items-center cursor-pointer text-gray-800">
-          <img src={assets.logo_black} alt="logo" className="w-10 sm:w-12" />
+          <img src={assets.logo} alt="logo" className="w-10 sm:w-12" width="48" height="48" />
           <h1 className="text-xl sm:text-2xl font-semibold">EduCrest</h1>
         </div>
 

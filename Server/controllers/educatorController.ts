@@ -244,6 +244,7 @@ export const getEnrolledStudentsData = async (req: any, res: Response) => {
                             student: {
                                 _id: student._id,
                                 name: student.name,
+                                email: student.email,
                                 imageUrl: student.imageUrl
                             },
                             courseTitle: course.courseTitle,
@@ -285,11 +286,11 @@ export const educatorEnrollUser = async (req: any, res: Response) => {
         }
 
         await User.findByIdAndUpdate(user._id, {
-            $addToSet: { enrolledCourses: courseId }
+            $push: { enrolledCourses: courseId }
         });
 
         await Course.findByIdAndUpdate(courseId, {
-            $addToSet: { enrolledStudents: user._id }
+            $push: { enrolledStudents: user._id }
         });
 
         res.json({ success: true, message: 'Student enrolled successfully' });

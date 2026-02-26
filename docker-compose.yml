@@ -1,0 +1,18 @@
+services:
+  server:
+    build:
+      context: ./Server
+    ports:
+      - "5002:5002"
+    env_file:
+      - ./Server/.env
+    restart: always
+
+  client:
+    build:
+      context: ./Client
+    ports:
+      - "5173:80"
+    restart: always
+    depends_on:
+      - server

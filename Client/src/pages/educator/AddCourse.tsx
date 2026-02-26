@@ -3,7 +3,6 @@ import { useSearchParams } from 'react-router-dom';
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import { htmlEditButton } from "quill-html-edit-button";
-import ImageResize from "quill-image-resize-module-react";
 import { assets } from "../../assets/assets";
 import { useAppContext } from "../../context/AppContext";
 import { toast } from "react-toastify";
@@ -13,7 +12,6 @@ import { v4 as uuidv4 } from 'uuid';
 // Register modules if Quill is available
 if (Quill) {
   Quill.register("modules/htmlEditButton", htmlEditButton);
-  Quill.register("modules/imageResize", ImageResize);
 }
 
 interface Lecture {
@@ -65,6 +63,56 @@ const AddCourse = () => {
   const [currentLectureIndex, setCurrentLectureIndex] = useState<number | null>(null);
   const [courseCategory, setCourseCategory] = useState("Others");
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [selectedImageInfo, setSelectedImageInfo] = useState<{ element: HTMLElement | null, top: number, left: number } | null>(null);
+
+  // Capture clicks globally on the window to bypass React synthetics and Quill dom shielding
+  useEffect(() => {
+    const handleWindowClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      // Look for clicks directly on an IMG tag inside a quill editor
+      if (target && target.tagName === 'IMG' && target.closest('.ql-editor')) {
+        const rect = target.getBoundingClientRect();
+        setSelectedImageInfo({
+          element: target,
+          top: rect.top,
+          left: rect.left
+        });
+      } else if (target && !target.closest('.delete-image-btn')) {
+        // If they clicked anything other than an image or the delete button, clear tooltips
+        if (selectedImageInfo) {
+          setSelectedImageInfo(null);
+        }
+      }
+    };
+
+    // true = capture phase, fires before ANY other element in the DOM
+    window.addEventListener('click', handleWindowClick, true);
+    return () => window.removeEventListener('click', handleWindowClick, true);
+  }, [selectedImageInfo]);
+
+  const deleteSelectedImage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (selectedImageInfo?.element) {
+      // Native quill instances
+      const refs = [quillRef, lectureQuillRef];
+      for (const ref of refs) {
+        if (ref.current) {
+          const editor = ref.current;
+          const blot = Quill.find(selectedImageInfo.element);
+          if (blot) {
+            try {
+              const index = editor.getIndex(blot as any);
+              editor.deleteText(index, 1);
+              break; // Stop once we find and delete it
+            } catch (err) { }
+          }
+        }
+      }
+    }
+    setSelectedImageInfo(null);
+  };
 
   const [lectureDetails, setLectureDetails] = useState<{
     lectureTitle: string;
@@ -208,10 +256,7 @@ const AddCourse = () => {
               }
             }
           },
-          htmlEditButton: { debug: false, syntax: true },
-          imageResize: {
-            displaySize: true
-          }
+          htmlEditButton: { debug: false, syntax: true }
         }
       });
       if (lectureDetails.lectureContent) {

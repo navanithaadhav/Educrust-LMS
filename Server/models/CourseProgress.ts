@@ -11,7 +11,8 @@ const courseProgressSchema = new mongoose.Schema({
         quizScore: Number
     }],
     isCompleted: { type: Boolean, default: false },
-    completedAt: { type: Date }
+    completedAt: { type: Date },
+    certificateStatus: { type: String, enum: ['none', 'requested', 'approved', 'downloaded'], default: 'none' }
 }, { minimize: false, timestamps: true });
 
 const CourseProgress = mongoose.model("CourseProgress", courseProgressSchema);

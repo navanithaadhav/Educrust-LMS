@@ -8,12 +8,18 @@ const Footeronly = () => {
       <footer className='bg-gray-900 md:px-8 lg:px-14 text-left w-full mt-10'>
 
         <div className='grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-5 lg:gap-32 px-8 md:px-0 py-10 text-white border-b border-white/30'>
-          <div className='flex flex-col md:items-start items-center   w-full'>
-            <div onClick={() => navigate('/')} className="flex items-center  cursor-pointer">
+          <div className='flex flex-col md:items-start items-center w-full'>
+            <div onClick={() => navigate('/')} className="flex items-center cursor-pointer">
               <img src={assets.logo} alt="logo" className="w-10 sm:w-12" />
               <h1 className="text-xl sm:text-2xl font-semibold">EduCrest</h1>
             </div>
             <p className='mt-2 text-center md:text-left text-sm text-white/80'>Empowering learners with flexible, accessible, and high-quality education through our powerful LMS platform.</p>
+            <div className='mt-4 text-center md:text-left text-sm text-white/80'>
+              <p className="font-semibold text-white mb-1">Our Address:</p>
+              <p>123, VOC Street,</p>
+              <p>R.S. Puram,</p>
+              <p>Coimbatore, Tamil Nadu 641002</p>
+            </div>
           </div>
           <div className='flex flex-col md:items-start items-center w-full'>
             <h2 className='text-lg font-semibold  '>Quick Links</h2>

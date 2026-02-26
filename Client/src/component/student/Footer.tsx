@@ -30,7 +30,7 @@ const Footer = () => {
         <div className="relative overflow-hidden rounded-2xl bg-white shadow-2xl">
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
-            <img src="/footer.png" alt="background" className="w-full h-full object-cover opacity-90" />
+            <img src="/footer.png" alt="background" className="w-full h-full object-cover opacity-90" loading="lazy" decoding="async" />
             {/* Gradient for text readability if needed */}
             <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent"></div>
           </div>
@@ -64,13 +64,19 @@ const Footer = () => {
           <div className='flex flex-col items-start'>
             <div onClick={() => navigate('/')} className="flex items-center gap-3 cursor-pointer group">
               {/* Assuming logo might need a white version or filter for dark bg if it's dark text */}
-              <img src={assets.logo} alt="EduCrest" className="w-8 md:w-10 opacity-90 group-hover:opacity-100 transition-opacity invert sm:invert-0 brightness-0 sm:brightness-100 invert-0 sm:invert-0 filter brightness-[100] sm:brightness-[100] grayscale-0" />
+              <img src={assets.logo} alt="EduCrest" className="w-8 md:w-10 opacity-90 group-hover:opacity-100 transition-opacity filter brightness-[100]" width="40" height="40" />
               {/* Wait, simple approach: just render logo. If it's black logo on dark bg it won't show. I'll add brightness-200 or invert if needed or rely on text */}
               <h1 className="text-2xl md:text-3xl font-bold tracking-wide">EduCrest</h1>
             </div>
             <p className='mt-6 text-slate-300 leading-relaxed max-w-xs text-sm md:text-base'>
               Empowering learners with flexible, accessible, and high-quality education through our powerful LMS platform.
             </p>
+            <div className='mt-6 text-slate-300 text-sm md:text-base leading-relaxed'>
+              <p className="font-semibold text-white mb-1">Our Address:</p>
+              <p>123, VOC Street,</p>
+              <p>R.S. Puram,</p>
+              <p>Coimbatore, Tamil Nadu 641002</p>
+            </div>
           </div>
 
           {/* Column 2: Quick Links */}

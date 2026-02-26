@@ -165,7 +165,6 @@ const Players = () => {
               <p className="text-sm text-gray-500">
                 {isCourseCompleted ? "Completed!" : `${progressData ? Math.round((progressData.completedLectures.length / ((courseData?.courseContent || []).reduce((acc, ch) => acc + ch.chapterContent.length, 0) || 1)) * 100) : 0}% Completed`}
               </p>
-              <CertificateButton courseData={courseData} userData={userData} isCourseCompleted={isCourseCompleted} />
             </div>
 
             {/* Progress Bar */}
@@ -245,6 +244,13 @@ const Players = () => {
               {playerData ? `${playerData.lectureTitle}` : "Select a Lesson"}
             </h1>
             <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+              {isCourseCompleted && (
+                <CertificateButton
+                  courseData={courseData}
+                  userData={userData}
+                  isCourseCompleted={isCourseCompleted}
+                />
+              )}
               <button
                 onClick={goToPreviousLecture}
                 className="flex items-center gap-1 text-gray-600 hover:text-gray-900 font-medium px-3 py-1.5 rounded-md hover:bg-gray-100 transition-colors disabled:opacity-50"

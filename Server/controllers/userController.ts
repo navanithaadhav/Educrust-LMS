@@ -117,3 +117,57 @@ export const getUserCourseProgress = async (req: any, res: Response) => {
         res.json({ success: false, message: error.message });
     }
 }
+
+export const requestCertificate = async (req: any, res: Response) => {
+    try {
+        const userId = req.auth.userId;
+        const { courseId } = req.body;
+
+        let progressData = await CourseProgress.findOne({ userId, courseId });
+
+        if (!progressData) {
+            return res.json({ success: false, message: "Course progress not found" });
+        }
+
+        if (progressData.certificateStatus === 'requested') {
+            return res.json({ success: false, message: "Certificate already requested" });
+        }
+        if (progressData.certificateStatus === 'approved') {
+            return res.json({ success: false, message: "Certificate already approved" });
+        }
+        if (progressData.certificateStatus === 'downloaded') {
+            return res.json({ success: false, message: "Certificate already downloaded" });
+        }
+
+        progressData.certificateStatus = 'requested';
+        await progressData.save();
+
+        res.json({ success: true, message: 'Certificate requested successfully' });
+    } catch (error: any) {
+        res.json({ success: false, message: error.message });
+    }
+}
+
+export const markCertificateDownloaded = async (req: any, res: Response) => {
+    try {
+        const userId = req.auth.userId;
+        const { courseId } = req.body;
+
+        let progressData = await CourseProgress.findOne({ userId, courseId });
+
+        if (!progressData) {
+            return res.json({ success: false, message: "Course progress not found" });
+        }
+
+        if (progressData.certificateStatus !== 'approved') {
+            return res.json({ success: false, message: "Certificate not approved for download or already downloaded" });
+        }
+
+        progressData.certificateStatus = 'downloaded';
+        await progressData.save();
+
+        res.json({ success: true, message: 'Certificate marked as downloaded' });
+    } catch (error: any) {
+        res.json({ success: false, message: error.message });
+    }
+}

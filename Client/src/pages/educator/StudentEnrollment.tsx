@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 
 const StudentEnrollment = () => {
 
-  const { backendUrl, educatorCourses, fetchEducatorCourses } = useAppContext()
+  const { backendUrl, educatorCourses, fetchEducatorCourses, fetchUserEnrolledCourses } = useAppContext()
   const [enrolledStudents, setEnrolledStudents] = useState<any[] | null>(null)
 
   // Modal State
@@ -49,7 +49,8 @@ const StudentEnrollment = () => {
         setShowModal(false)
         setEnrollEmail('')
         setSelectedCourseId('')
-        fetchStudentEnrolled() // Refresh list
+        fetchStudentEnrolled() // Refresh educator list
+        fetchUserEnrolledCourses() // Update student dashboard simultaneously
       } else {
         toast.error(data.message)
       }
@@ -118,7 +119,7 @@ const StudentEnrollment = () => {
           <thead className='text-gray-900 border-b border-gray-500/30 text-sm text-left'>
             <tr>
               <th className='px-4 py-3 font-semibold truncate'>S.NO</th>
-              <th className='px-4 py-3 font-semibold truncate'>Student Name</th>
+              <th className='px-4 py-3 font-semibold truncate'>Student Name & Email</th>
               <th className='px-4 py-3 font-semibold truncate'>Course Title</th>
               <th className='px-4 py-3 font-semibold truncate'>Date</th>
             </tr>
@@ -130,7 +131,10 @@ const StudentEnrollment = () => {
                 <td className='md:px-4 px-2 py-3 flex items-center space-x-3'>
                   <img
                     src={item.student.imageUrl} alt="Profile" className='w-9 h-9 rounded-full' />
-                  <span className='truncate'>{item.student.name}</span>
+                  <div className='flex flex-col'>
+                    <span className='truncate font-medium'>{item.student.name}</span>
+                    <span className='truncate text-xs text-gray-500'>{item.student.email}</span>
+                  </div>
                 </td>
                 <td className='px-4 py-3 truncate'>{item.courseTitle}</td>
                 <td className='px-4 py-3 hidden sm:table-cell'>{new Date(item.purchaseDate).toLocaleDateString()}</td>

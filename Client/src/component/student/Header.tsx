@@ -17,7 +17,7 @@ const Header = () => {
   ]
 
   return (
-    <div className="relative overflow-hidden bg-slate-50/50">
+    <div className="relative overflow-hidden bg-slate-50/50 min-h-[600px]">
 
       {/* Background Animated Blobs */}
       <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-purple-200/40 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob"></div>
@@ -83,6 +83,10 @@ const Header = () => {
               alt="Student"
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              fetchPriority="high"
+              decoding="async"
+              width="448"
+              height="448"
             />
 
             {/* Floating Glassmorphism Cards */}
@@ -96,7 +100,7 @@ const Header = () => {
                 y: { duration: 4, repeat: Infinity, ease: "easeInOut" }
               }}
             >
-              <img className="w-20 sm:w-24 object-contain" src={assets.calendar} alt="Calendar" />
+              <img className="w-20 sm:w-24 object-contain" src={assets.calendar} alt="Calendar" loading="lazy" decoding="async" />
             </motion.div>
 
             {/* UX - Bottom Left */}
@@ -109,7 +113,7 @@ const Header = () => {
                 y: { duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }
               }}
             >
-              <img className="w-20 sm:w-24 object-contain" src={assets.ux} alt="UX" />
+              <img className="w-20 sm:w-24 object-contain" src={assets.ux} alt="UX" loading="lazy" decoding="async" />
             </motion.div>
 
             {/* Congrat - Bottom Right */}
@@ -122,7 +126,7 @@ const Header = () => {
                 y: { duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1 }
               }}
             >
-              <img className="w-24 sm:w-32 object-contain" src={assets.congrat} alt="Congratulation" />
+              <img className="w-24 sm:w-32 object-contain" src={assets.congrat} alt="Congratulation" loading="lazy" decoding="async" />
             </motion.div>
           </div>
         </motion.div>
@@ -139,18 +143,18 @@ const Header = () => {
           <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-white to-transparent z-10"></div>
           <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white to-transparent z-10"></div>
 
-          <div className="flex shrink-0 gap-16 animate-marquee min-w-full items-center justify-around px-8">
+          <div className="flex shrink-0 gap-10 lg:gap-14 animate-marquee min-w-full items-center justify-between px-8">
             {[...companies, ...companies].map((company, index) => (
-              <div key={index} className="flex items-center justify-center min-w-[100px] grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300 transform hover:scale-110 cursor-pointer">
-                <img src={company.logo} alt={company.name} className="h-8 md:h-9 w-auto object-contain" />
+              <div key={index} className="flex items-center justify-center grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300 transform hover:scale-110 cursor-pointer">
+                <img src={company.logo} alt={company.name} className="h-8 md:h-9 w-auto object-contain" loading="lazy" decoding="async" />
               </div>
             ))}
           </div>
 
-          <div className="flex shrink-0 gap-16 animate-marquee min-w-full items-center justify-around px-8" aria-hidden="true">
+          <div className="flex shrink-0 gap-10 lg:gap-14 animate-marquee min-w-full items-center justify-between px-8" aria-hidden="true">
             {[...companies, ...companies].map((company, index) => (
-              <div key={index} className="flex items-center justify-center min-w-[100px] grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300 transform hover:scale-110 cursor-pointer">
-                <img src={company.logo} alt={company.name} className="h-8 md:h-9 w-auto object-contain" />
+              <div key={index} className="flex items-center justify-center grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300 transform hover:scale-110 cursor-pointer">
+                <img src={company.logo} alt={company.name} className="h-8 md:h-9 w-auto object-contain" loading="lazy" decoding="async" />
               </div>
             ))}
           </div>

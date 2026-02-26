@@ -111,7 +111,7 @@ const CourseDetails = () => {
                       toast.warning("Enroll to rate the course")
                     }
                   }}
-                  src={i < Math.floor(calculateRating(courseData) || demoRating) ? assets.star : assets.star_blank} alt='star' className={`w-3.5 h-3.5 ${isAlreadyEnrolled ? 'cursor-pointer hover:scale-110' : ''}`} />
+                  src={i < Math.floor(calculateRating(courseData) || demoRating) ? assets.star : assets.star_blank} alt='star' width="14" height="14" className={`w-3.5 h-3.5 ${isAlreadyEnrolled ? 'cursor-pointer hover:scale-110' : ''}`} />
               ))}
             </div>
             <p className='text-gray-500'>({courseData.courseRatings.length || demoCount} {(courseData.courseRatings.length || demoCount) > 1 ? 'ratings' : 'rating'})</p>

@@ -1,5 +1,6 @@
 import User from "../models/user.js";
 import Course from "../models/course.js";
+import CourseProgress from "../models/CourseProgress.js";
 import { Request, Response } from "express";
 import { v2 as cloudinary } from 'cloudinary';
 
@@ -318,3 +319,52 @@ export const updateReview = async (req: any, res: Response) => {
         res.json({ success: false, message: error.message });
     }
 }
+
+// Get All Certificate Requests
+export const getCertificateRequests = async (req: Request, res: Response) => {
+    try {
+        const requests = await CourseProgress.find({ certificateStatus: 'requested' });
+
+        const formattedRequests = await Promise.all(requests.map(async (reqst) => {
+            const user = await User.findById(reqst.userId).select('name email imageUrl');
+            const course = await Course.findById(reqst.courseId).select('courseTitle');
+            return {
+                _id: reqst._id,
+                userId: reqst.userId,
+                courseId: reqst.courseId,
+                userName: user ? user.name : 'Unknown',
+                userEmail: user ? user.email : 'Unknown',
+                userImage: user ? user.imageUrl : '',
+                courseTitle: course ? course.courseTitle : 'Unknown',
+                requestedAt: (reqst as any).updatedAt,
+                status: reqst.certificateStatus
+            };
+        }));
+
+        res.json({ success: true, requests: formattedRequests });
+    } catch (error: any) {
+        res.json({ success: false, message: error.message });
+    }
+}
+
+// Update Certificate Status (Approve/Reject)
+export const updateCertificateStatus = async (req: Request, res: Response) => {
+    try {
+        const { progressId, status } = req.body;
+
+        if (!['approved', 'none', 'requested'].includes(status)) {
+            return res.json({ success: false, message: 'Invalid status' });
+        }
+
+        const progress = await CourseProgress.findByIdAndUpdate(progressId, { certificateStatus: status }, { new: true });
+
+        if (!progress) {
+            return res.json({ success: false, message: 'Progress record not found' });
+        }
+
+        res.json({ success: true, message: `Certificate ${status === 'approved' ? 'approved' : 'rejected'} successfully` });
+    } catch (error: any) {
+        res.json({ success: false, message: error.message });
+    }
+}
+

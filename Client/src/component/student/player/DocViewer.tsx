@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Lecture } from '../../../types';
 import { useAppContext } from '../../../context/AppContext';
+import { Info, DownloadCloud } from 'lucide-react';
 
 interface DocViewerProps {
     playerData: Lecture | null;
@@ -53,26 +54,31 @@ const DocViewer: React.FC<DocViewerProps> = ({ playerData }) => {
 
     if (playerData.resourceType === 'pdf' || playerData.resourceType === 'ppt') {
         return (
-            <div className="flex flex-col h-full gap-4">
+            <div className="flex flex-col h-full gap-4 p-4 box-border">
                 <iframe
                     src={`https://docs.google.com/gview?url=${encodeURIComponent(playerData.lectureUrl)}&embedded=true`}
-                    className="w-full flex-1 bg-gray-100 min-h-[500px]"
+                    className="w-full flex-1 bg-gray-50 min-h-0 rounded-2xl border border-gray-200/60 shadow-inner"
                     title="Document Viewer"
                 />
-                <div className="p-4 bg-blue-50 border border-blue-200 rounded-md flex items-center justify-between">
-                    <div>
-                        <p className="text-sm text-blue-800 font-medium">Issue viewing the file?</p>
-                        <p className="text-xs text-blue-600">The browser cannot preview some large files (like &gt;20MB PDF/PPT).</p>
+                <div className="p-5 bg-white border border-gray-100 rounded-2xl shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all hover:shadow-md ring-1 ring-black/5 shrink-0">
+                    <div className="flex items-start gap-4">
+                        <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl shrink-0 shadow-inner ring-1 ring-blue-100/50">
+                            <Info size={22} strokeWidth={2.5} />
+                        </div>
+                        <div>
+                            <p className="text-[15px] text-slate-800 font-semibold mb-1">Issue viewing this document?</p>
+                            <p className="text-sm text-slate-500 font-medium leading-relaxed max-w-lg">
+                                Some browsers have limitations when previewing very large files (e.g., &gt;20MB presentations or dense PDFs).
+                            </p>
+                        </div>
                     </div>
                     <a
                         href={playerData.lectureUrl}
                         download
                         target="_parent"
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded inline-flex items-center gap-2 transition-colors cursor-pointer"
+                        className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white text-[15px] font-semibold py-2.5 px-6 rounded-xl inline-flex items-center justify-center gap-2.5 transition-all shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 hover:-translate-y-0.5 cursor-pointer"
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                        </svg>
+                        <DownloadCloud size={19} strokeWidth={2.5} />
                         Download Document
                     </a>
                 </div>

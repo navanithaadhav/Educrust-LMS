@@ -57,14 +57,14 @@ const Navbar = () => {
 
     return (
         <>
-            <div className={`sticky top-0 left-0 w-full z-50 flex flex-col`}>
+            <div className={`relative md:sticky top-0 left-0 w-full z-50 flex flex-col`}>
                 {isHomePage && <OfferBar />}
                 <nav className={`w-full transition-all duration-300 bg-blue-900 py-3 `}>
                     <div className="mx-auto px-4 sm:px-8 md:px-8 lg:px-14 flex justify-between items-center">
 
                         {/* Logo */}
                         <Link to='/' className="flex items-center gap-2 cursor-pointer">
-                            <img src={assets.logo} alt="logo" className="w-8 sm:w-10" />
+                            <img src={assets.logo} alt="logo" className="w-8 sm:w-10" decoding="async" fetchPriority="high" width="40" height="40" />
                             <h1 className={`text-xl sm:text-2xl font-bold tracking-tight text-white`}>EduCrest</h1>
                         </Link>
 

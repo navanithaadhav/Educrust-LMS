@@ -61,6 +61,10 @@ const AdminSidebar = () => {
                     className={`flex items-center gap-2 p-2 hover:text-white transition cursor-pointer rounded ${isActive('/admin/reviews') ? 'bg-indigo-600 text-white' : 'text-gray-400'}`}>
                     Reviews
                 </div>
+                <div onClick={() => navigate('/admin/certificates')}
+                    className={`flex items-center gap-2 p-2 hover:text-white transition cursor-pointer rounded ${isActive('/admin/certificates') ? 'bg-indigo-600 text-white' : 'text-gray-400'}`}>
+                    Certificates
+                </div>
                 <button onClick={logout} className='mt-10 flex items-center gap-2 text-red-400 hover:text-red-300 p-2 transition text-left'>
                     Logout
                 </button>

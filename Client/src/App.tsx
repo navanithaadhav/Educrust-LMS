@@ -1,10 +1,11 @@
-
 import { Routes, Route, useMatch } from 'react-router-dom'
 
 import { lazy, Suspense } from 'react'
 import { ToastContainer } from 'react-toastify';
 import Loading from './component/student/Loading'
 import Navbar from './component/student/Navbar'
+import CourseChatbot from './component/student/CourseChatbot'
+import { FaWhatsapp } from 'react-icons/fa'
 import "quill/dist/quill.snow.css";
 
 const Home = lazy(() => import('./pages/student/Home'))
@@ -28,6 +29,7 @@ const AdminCourses = lazy(() => import('./pages/admin/AdminCourses'))
 const AdminAddCourse = lazy(() => import('./pages/admin/AdminAddCourse'))
 const AdminEnrollment = lazy(() => import('./pages/admin/AdminEnrollment'))
 const AdminReviews = lazy(() => import('./pages/admin/AdminReviews'))
+const AdminCertificates = lazy(() => import('./pages/admin/AdminCertificates'))
 const StudentDashboard = lazy(() => import('./pages/student/StudentDashboard'))
 const DashboardHome = lazy(() => import('./pages/student/DashboardHome'))
 const StudentProfile = lazy(() => import('./pages/student/StudentProfile'))
@@ -47,11 +49,30 @@ const App = () => {
 
   const isLoginRoute = useMatch('/login')
   const isAdminLoginRoute = useMatch('/admin-login')
+  const isPlayerRoute = useMatch('/player/:courseId')
+
+  // Show Chatbot and WhatsApp on all routes except Player page for distraction-free learning
+  const showFloatingWidgets = !isPlayerRoute;
 
   return (
     <div >
       <ToastContainer />
       {!isEducatorRoute && !isStudentRoute && !isLoginRoute && !isAdminRoute && !isAdminLoginRoute && <Navbar />}
+
+      {showFloatingWidgets && (
+        <>
+          <CourseChatbot />
+          <a
+            href="https://wa.me/918778543730"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="fixed bottom-24 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 hover:scale-110 transition-all duration-300 z-50 flex items-center justify-center"
+            title="Chat with us on WhatsApp"
+          >
+            <FaWhatsapp size={28} />
+          </a>
+        </>
+      )}
 
       <Suspense fallback={<Loading />}>
         <Routes>
@@ -76,6 +97,7 @@ const App = () => {
             <Route path='/admin/edit-course/:id' element={<AdminAddCourse />} />
             <Route path='/admin/enrollments' element={<AdminEnrollment />} />
             <Route path='/admin/reviews' element={<AdminReviews />} />
+            <Route path='/admin/certificates' element={<AdminCertificates />} />
           </Route>
 
           <Route path='/my-enrollments' element={<MyEnrollments />} />

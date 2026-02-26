@@ -12,7 +12,7 @@ const TestimonialSection = () => {
                 {testimonial.map((testimonial, index) => (
                     <div key={index} className='text-sm  test-left border border-gray-500/30 pb-6 rounded-lg bg-white shadow-[0px_4px_15px_0px] shadow-black/5 overfkow-hidden'>
                         <div className='flex items-center  gap-4 px-5 py-4 bg-gray-100'>
-                            <img className='h-12 w-12 rounded-full' src={testimonial.image} alt={testimonial.name} />
+                            <img className='h-12 w-12 rounded-full' src={testimonial.image} alt={testimonial.name} loading="lazy" decoding="async" />
 
                             <div >
                                 <h1 className='text-lg font-medium text-gray-800'>{testimonial.name} </h1>

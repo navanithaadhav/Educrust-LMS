@@ -31,7 +31,7 @@ const About = () => {
                     </div>
                 </div>
                 <div className='flex-1 relative'>
-                    <img src={assets.about_img} className='w-full rounded-xl shadow-lg z-10 relative' alt="About Us" />
+                    <img src={assets.about_img} className='w-full rounded-xl shadow-lg z-10 relative' alt="About Us" loading="lazy" decoding="async" width="512" height="341" />
                     <div className='absolute -bottom-5 -right-5 w-full h-full border-4 border-blue-600 rounded-xl -z-0 hidden md:block'></div>
                 </div>
             </div>

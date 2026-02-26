@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import Quill from "quill";
+import React, { useEffect, useState, useRef } from "react";
+import ReactQuill, { Quill } from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 import { assets } from "../../assets/assets";
 import { useAppContext } from "../../context/AppContext";
 import { toast } from "react-toastify";
@@ -17,10 +18,12 @@ const AdminAddCourse = () => {
     const { backendUrl, updateCourse, allCourses, fetchAllCourses } = useAppContext()
     const navigate = useNavigate()
     const { id } = useParams()
-    const quillRef = useRef<Quill | null>(null);
-    const editorRef = useRef<HTMLDivElement>(null);
-    const lectureQuillRef = useRef<Quill | null>(null);
-    const lectureEditorRef = useRef<HTMLDivElement>(null);
+
+    // Explicit refs to force keyboard deletion
+    const courseQuillRef = useRef<ReactQuill>(null);
+    const lectureQuillRef = useRef<ReactQuill>(null);
+
+    const [courseDescription, setCourseDescription] = useState("");
 
     const [courseTitle, setCourseTitle] = useState("");
     const [coursePrice, setCoursePrice] = useState(0);
@@ -96,42 +99,75 @@ const AdminAddCourse = () => {
         }
     }
 
-    useEffect(() => {
-        if (!quillRef.current && editorRef.current) {
-            quillRef.current = new Quill(editorRef.current, {
-                theme: "snow",
-            });
-        }
-    }, []);
+    const quillModules = {
+        toolbar: [
+            [{ 'header': [1, 2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            ['blockquote', 'code-block'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            [{ 'script': 'sub' }, { 'script': 'super' }],
+            [{ 'indent': '-1' }, { 'indent': '+1' }],
+            [{ 'direction': 'rtl' }],
+            [{ 'size': ['small', false, 'large', 'huge'] }],
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+            [{ 'color': [] }, { 'background': [] }],
+            [{ 'font': [] }],
+            [{ 'align': [] }],
+            ['clean'],
+            ['link', 'image', 'video']
+        ]
+    };
 
+    const [selectedImageInfo, setSelectedImageInfo] = useState<{ element: HTMLElement | null, top: number, left: number } | null>(null);
+
+    // Capture clicks globally on the window to bypass React synthetics and Quill dom shielding
     useEffect(() => {
-        if (showLecturePopup && !lectureQuillRef.current && lectureEditorRef.current) {
-            lectureQuillRef.current = new Quill(lectureEditorRef.current, {
-                theme: "snow",
-                modules: {
-                    toolbar: [
-                        [{ 'header': [1, 2, 3, false] }],
-                        ['bold', 'italic', 'underline', 'strike'],
-                        ['blockquote', 'code-block'],
-                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                        [{ 'script': 'sub' }, { 'script': 'super' }],
-                        [{ 'indent': '-1' }, { 'indent': '+1' }],
-                        [{ 'direction': 'rtl' }],
-                        [{ 'size': ['small', false, 'large', 'huge'] }],
-                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                        [{ 'color': [] }, { 'background': [] }],
-                        [{ 'font': [] }],
-                        [{ 'align': [] }],
-                        ['clean'],
-                        ['link', 'image', 'video']
-                    ]
+        const handleWindowClick = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            // Look for clicks directly on an IMG tag inside a quill editor
+            if (target && target.tagName === 'IMG' && target.closest('.ql-editor')) {
+                const rect = target.getBoundingClientRect();
+                setSelectedImageInfo({
+                    element: target,
+                    top: rect.top,
+                    left: rect.left
+                });
+            } else if (target && !target.closest('.delete-image-btn')) {
+                // If they clicked anything other than an image or the delete button, clear tooltips
+                if (selectedImageInfo) {
+                    setSelectedImageInfo(null);
                 }
-            });
-            if (lectureDetails.lectureContent) {
-                lectureQuillRef.current.root.innerHTML = lectureDetails.lectureContent;
+            }
+        };
+
+        // true = capture phase, fires before ANY other element in the DOM
+        window.addEventListener('click', handleWindowClick, true);
+        return () => window.removeEventListener('click', handleWindowClick, true);
+    }, [selectedImageInfo]);
+
+    const deleteSelectedImage = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (selectedImageInfo?.element) {
+            // Test both quill bounds to see where this image lives
+            const refs = [courseQuillRef, lectureQuillRef];
+            for (const ref of refs) {
+                if (ref.current) {
+                    const editor = ref.current.getEditor();
+                    const blot = Quill.find(selectedImageInfo.element);
+                    if (blot) {
+                        try {
+                            const index = editor.getIndex(blot as any);
+                            editor.deleteText(index, 1);
+                            break; // Stop once we find and delete it
+                        } catch (err) { }
+                    }
+                }
             }
         }
-    }, [showLecturePopup]);
+        setSelectedImageInfo(null);
+    };
 
     useEffect(() => {
         if (id && allCourses.length > 0) {
@@ -145,9 +181,7 @@ const AdminAddCourse = () => {
                 if (course.educator) {
                     setSelectedEducator(typeof course.educator === 'object' ? (course.educator as any)._id : course.educator);
                 }
-                if (quillRef.current) {
-                    quillRef.current.root.innerHTML = course.courseDescription;
-                }
+                setCourseDescription(course.courseDescription || "");
             }
         }
     }, [id, allCourses]);
@@ -163,13 +197,10 @@ const AdminAddCourse = () => {
             return;
         }
 
-        const content = lectureQuillRef.current?.root.innerHTML || "";
-
         setChapters(chapters.map((ch) => {
             if (ch.chapterId === currentChapterId) {
                 const newLecture: Lecture = {
                     ...lectureDetails,
-                    lectureContent: content,
                     lectureOrder: ch.chapterContent.length > 0 ? (ch.chapterContent.slice(-1)[0].lectureOrder || 0) + 1 : 1,
                     lectureId: uuidv4()
                 };
@@ -187,7 +218,6 @@ const AdminAddCourse = () => {
             lectureContent: "",
             resourceType: "video",
         });
-        lectureQuillRef.current = null;
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -200,7 +230,7 @@ const AdminAddCourse = () => {
 
         const courseData = {
             courseTitle,
-            courseDescription: quillRef.current?.root.innerHTML,
+            courseDescription: courseDescription,
             coursePrice,
             discount,
             courseCategory,
@@ -232,9 +262,7 @@ const AdminAddCourse = () => {
                     setImage(null)
                     setChapters([])
                     setSelectedEducator("")
-                    if (quillRef.current) {
-                        quillRef.current.root.innerHTML = ""
-                    }
+                    setCourseDescription("")
                     await fetchAllCourses();
                 } else {
                     toast.error(data.message)
@@ -309,7 +337,27 @@ const AdminAddCourse = () => {
                                 {image && <img src={URL.createObjectURL(image)} alt="" className="max-h-20" />}
                             </label>
                         </div>
-                        <div><p>Course Description</p><div ref={editorRef} className="h-40 border rounded"></div></div>
+                        <div className="flex flex-col gap-1 relative">
+                            <p>Course Description</p>
+                            <div className="bg-white rounded-md mb-8 relative">
+                                <ReactQuill
+                                    ref={courseQuillRef}
+                                    theme="snow"
+                                    value={courseDescription}
+                                    onChange={setCourseDescription}
+                                    className="h-40"
+                                />
+                                {selectedImageInfo && document.activeElement !== document.body && (
+                                    <div
+                                        className="delete-image-btn absolute z-50 bg-red-600 text-white p-2 rounded-md font-semibold cursor-pointer shadow-lg hover:bg-red-700 hover:scale-105 transition-all text-sm flex items-center gap-1"
+                                        style={{ position: 'fixed', top: selectedImageInfo.top - 45, left: selectedImageInfo.left }}
+                                        onClick={deleteSelectedImage}
+                                    >
+                                        🗑️ Delete Image
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                         <div>
                             {chapters.map((chapter, chapterIndex) => (
                                 <div key={chapterIndex} className="border border-gray-300 p-3 rounded-lg mb-2">
@@ -403,14 +451,32 @@ const AdminAddCourse = () => {
                                     )}
 
 
-                                    <div className="mb-2">
-                                        <p>Lecture Content (Description, Images, Videos)</p>
-                                        <div ref={lectureEditorRef} className="h-96 border rounded bg-white text-black"></div>
+                                    <div className="mb-8 relative">
+                                        <p className="mb-1">Lecture Content (Description, Images, Videos)</p>
+                                        <div className="bg-white text-black h-80 rounded relative">
+                                            <ReactQuill
+                                                ref={lectureQuillRef}
+                                                theme="snow"
+                                                value={lectureDetails.lectureContent}
+                                                onChange={(content) => setLectureDetails({ ...lectureDetails, lectureContent: content })}
+                                                modules={quillModules}
+                                                className="h-full"
+                                            />
+                                            {selectedImageInfo && (
+                                                <div
+                                                    className="delete-image-btn absolute z-50 bg-red-600 text-white p-2 rounded-md font-semibold cursor-pointer shadow-lg hover:bg-red-700 hover:scale-105 transition-all text-sm flex items-center gap-1"
+                                                    style={{ position: 'fixed', top: selectedImageInfo.top - 45, left: selectedImageInfo.left }}
+                                                    onClick={deleteSelectedImage}
+                                                >
+                                                    🗑️ Delete Image
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
 
-                                    <div className="flex items-center gap-2 my-4"><p>Is Priview Free?</p><input type="checkbox" checked={lectureDetails.isPreviewFree} className="mt-1 scale-125" onChange={(e) => setLectureDetails({ ...lectureDetails, isPreviewFree: e.target.checked })} /></div>
+                                    <div className="flex items-center gap-2 mt-12 mb-4"><p>Is Priview Free?</p><input type="checkbox" checked={lectureDetails.isPreviewFree} className="mt-1 scale-125" onChange={(e) => setLectureDetails({ ...lectureDetails, isPreviewFree: e.target.checked })} /></div>
                                     <button type="button" onClick={addLecture} className="bg-blue-500 text-white px-4 py-2 rounded">Add</button>
-                                    <img src={assets.cross_icon} alt="cross_icon" onClick={() => { setShowLecturePopup(false); lectureQuillRef.current = null; }} className="absolute top-4 right-4 w-4 cursor-pointer" />
+                                    <img src={assets.cross_icon} alt="cross_icon" onClick={() => setShowLecturePopup(false)} className="absolute top-4 right-4 w-4 cursor-pointer" />
                                 </div>
                             </div>
                         )}

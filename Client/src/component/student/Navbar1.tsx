@@ -54,7 +54,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="sticky top-0 left-0 w-full z-50 bg-blue-900 text-white px-4 sm:px-10 py-3">
+    <nav className="relative md:sticky top-0 left-0 w-full z-50 bg-blue-900 text-white px-4 sm:px-10 py-3">
 
       <div className="flex justify-between items-center">
         {/* Logo */}

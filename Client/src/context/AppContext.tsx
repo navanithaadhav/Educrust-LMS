@@ -1,9 +1,11 @@
 import axios from "axios";
-import { useEffect, createContext, useState, ReactNode, useContext } from "react";
+import { useEffect, useRef, createContext, useState, ReactNode, useContext } from "react";
 import { toast } from "react-toastify";
 import { dummyTestimonial, assets } from "../assets/assets";
 import humanizeDuration from 'humanize-duration';
 import { Course, Testimonial, UserData, Chapter } from "../types";
+import { io } from 'socket.io-client';
+
 
 export interface AppContextType {
   currency: string;
@@ -33,6 +35,10 @@ export interface AppContextType {
   enrolCourse: (courseId: string, plan?: 'full' | 'split') => Promise<void>;
   updateCourseProgress: (courseId: string, lectureId: string) => Promise<any>;
   getCourseProgress: (courseId: string) => Promise<any>;
+  requestCertificate: (courseId: string) => Promise<boolean>;
+  markCertificateDownloaded: (courseId: string) => Promise<boolean>;
+  // Expose socket accessor for components that need real‑time communication
+  getSocket: () => ReturnType<typeof io> | null;
 }
 
 export const AppContext = createContext<AppContextType | null>(null);
@@ -63,6 +69,22 @@ export function AppContextProvider({ children }: AppContextProviderProps) {
   const [educatorCourses, setEducatorCourses] = useState<Course[]>([]);
   const [testimonial, setTestimonial] = useState<Testimonial[]>([]);
   const [enrolledCourses, setEnrolledCourses] = useState<Course[]>([]);
+  // ---------- SOCKET HANDLING ----------
+  const socketRef = useRef<ReturnType<typeof io> | null>(null); // used via getSocket
+
+  // Accessor for components to get the socket instance
+  const getSocket = () => socketRef.current;
+
+  // Initialize socket connection when backendUrl is available
+  useEffect(() => {
+    if (backendUrl && !socketRef.current) {
+      socketRef.current = io(backendUrl);
+    }
+    return () => {
+      socketRef.current?.disconnect();
+      socketRef.current = null;
+    };
+  }, [backendUrl]);
 
   const fetchTestimonials = async () => {
     setTestimonial(dummyTestimonial as Testimonial[]);
@@ -236,6 +258,20 @@ export function AppContextProvider({ children }: AppContextProviderProps) {
     }
   };
 
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
+
   const enrolCourse = async (courseId: string, plan?: 'full' | 'split') => {
     try {
       if (!userData) {
@@ -286,6 +322,13 @@ export function AppContextProvider({ children }: AppContextProviderProps) {
           }
         };
 
+        const res = await loadRazorpayScript();
+
+        if (!res) {
+          toast.error("Razorpay SDK failed to load. Are you online?");
+          return;
+        }
+
         const rzp1 = new (window as any).Razorpay(options);
         rzp1.open();
 
@@ -323,6 +366,37 @@ export function AppContextProvider({ children }: AppContextProviderProps) {
     }
   }
 
+  const requestCertificate = async (courseId: string): Promise<boolean> => {
+    try {
+      const { data } = await axios.post(backendUrl + '/api/user/request-certificate', { courseId });
+      if (data.success) {
+        toast.success(data.message);
+        return true;
+      } else {
+        toast.error(data.message);
+        return false;
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+      return false;
+    }
+  }
+
+  const markCertificateDownloaded = async (courseId: string): Promise<boolean> => {
+    try {
+      const { data } = await axios.post(backendUrl + '/api/user/mark-certificate-downloaded', { courseId });
+      if (data.success) {
+        return true;
+      } else {
+        toast.error(data.message);
+        return false;
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+      return false;
+    }
+  }
+
   useEffect(() => {
     getAuthState();
   }, []);
@@ -354,6 +428,8 @@ export function AppContextProvider({ children }: AppContextProviderProps) {
     calculateChapterTime,
     calculateCourseDuration,
     calculateNoOfLecture,
+    // expose socket accessor
+    getSocket,
     fetchAllCourses,
     fetchTestimonials,
     fetchUserEnrolledCourses,
@@ -363,7 +439,9 @@ export function AppContextProvider({ children }: AppContextProviderProps) {
     getUserData,
     enrolCourse,
     updateCourseProgress,
-    getCourseProgress
+    getCourseProgress,
+    requestCertificate,
+    markCertificateDownloaded
   };
 
   return (

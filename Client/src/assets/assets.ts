@@ -1,5 +1,4 @@
 import logo from './logo.png'
-import logo_dark from './logo_dark.svg'
 import search_icon from './search_icon.svg'
 import cross_icon from './cross_icon.svg'
 import upload_area from './upload_area.svg'
@@ -9,10 +8,10 @@ import walmart_logo from './walmart_logo.svg'
 import accenture_logo from './accenture_logo.svg'
 import adobe_logo from './adobe_logo.svg'
 import paypal_logo from './paypal_logo.svg'
-import course_1_thumbnail from './course_1.png'
-import course_2_thumbnail from './course_2.png'
-import course_3_thumbnail from './course_3.png'
-import course_4_thumbnail from './course_4.png'
+import course_1_thumbnail from './images/course_1.png'
+import course_2_thumbnail from './images/course_2.png'
+import course_3_thumbnail from './images/course_3.png'
+import course_4_thumbnail from './images/course_4.png'
 import star from './rating_star.svg'
 import star_blank from './star_dull_icon.svg'
 import profile_img_1 from './profile_img_1.png'
@@ -37,7 +36,7 @@ import dropdown_icon from './dropdown_icon.svg'
 import patients_icon from './patients_icon.svg'
 import play_icon from './play_icon.svg'
 import blue_tick_icon from './blue_tick_icon.svg'
-import course_4 from './course_4.png'
+import course_4 from './images/course_4.png'
 import profile_img from './profile_img.png'
 import profile_img2 from './profile_img2.png'
 import profile_img3 from './profile_img3.png'
@@ -47,8 +46,8 @@ import mail_icon from './mail_icon.svg'
 import person_icon from './person_icon.svg'
 import hand_wave from './hand_wave.png'
 import header_img from './header_img.png'
-import girl from './img/girl.png'
-import image from './img/image.png'
+import girl from './images/girl.png'
+import image from './img/image.webp'
 import calendar from './img/calendar.svg'
 import congrat from './img/congrat.svg'
 import ux from './img/ux-class.svg'
@@ -58,8 +57,8 @@ import facebook from './img/company/facebook.svg'
 import google from './img/company/google.svg'
 import grab from './img/company/grab.svg'
 import netflix from './img/company/netflix.svg'
-import logo_black from './logo_black.png'
-import about_img from './Rectangle 21.png'
+
+import about_img from './Rectangle 21.webp'
 import google_icon from './google_icon.svg'
 
 
@@ -91,7 +90,7 @@ export const assets = {
     dropdown_icon,
 
     upload_area,
-    logo_dark,
+    logo_dark: logo,
     down_arrow_icon,
     time_left_clock_icon,
     time_clock_icon,
@@ -130,7 +129,7 @@ export const assets = {
     google,
     grab,
     netflix,
-    logo_black,
+    logo_black: logo,
     about_img,
     google_icon
 }

@@ -13,6 +13,7 @@ interface CertificateProps {
 const Certificate: React.FC<CertificateProps> = ({ studentName, courseName, date, dataRef }) => {
     return (
         <div
+            id="real-certificate"
             ref={dataRef}
             className="mx-auto shadow-2xl"
             style={{
@@ -37,7 +38,7 @@ const Certificate: React.FC<CertificateProps> = ({ studentName, courseName, date
             {/* Header / Logo area */}
             <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', zIndex: 10 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <img src={assets.logo_black} alt="Logo" style={{ height: '48px', filter: 'invert(1) brightness(100)' }} />
+                    <img src={assets.logo} alt="Logo" style={{ height: '48px', width: '48px', filter: 'invert(1) brightness(100)' }} />
                     <span style={{ fontSize: '24px', fontWeight: 'bold', color: 'white', letterSpacing: '0.05em', fontFamily: "'Outfit', sans-serif" }}>Educrust</span>
                 </div>
             </div>

@@ -30,7 +30,7 @@ const Card: React.FC<CardProps> = ({ course }) => {
         <Link to={'/course/' + course._id} onClick={() => scrollTo(0, 0)}
             className='border border-gray-500/30 pb-6 overflow-hidden rounded-lg bg-white shadow-[0px_4px_15px_0px] shadow-black/5 relative group'>
 
-            <img className="w-full h-40 object-cover" src={course.courseThumbnail} alt="" />
+            <img className="w-full h-40 object-cover" src={course.courseThumbnail} alt="" loading="lazy" decoding="async" />
 
             {/* Offer Badge - Only if discount exists */}
             <div className='absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded shadow-md'>
