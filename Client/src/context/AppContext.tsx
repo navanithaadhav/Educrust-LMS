@@ -60,6 +60,7 @@ export function AppContextProvider({ children }: AppContextProviderProps) {
 
   const currency = import.meta.env.VITE_CURRENCY || "$";
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const socketUrl = import.meta.env.VITE_SOCKET_URL;
 
   const [isEducator, setIsEducator] = useState<boolean>(true);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -77,14 +78,14 @@ export function AppContextProvider({ children }: AppContextProviderProps) {
 
   // Initialize socket connection when backendUrl is available
   useEffect(() => {
-    if (backendUrl && !socketRef.current) {
-      socketRef.current = io(backendUrl);
+    if (socketUrl && !socketRef.current) {
+      socketRef.current = io(socketUrl);
     }
     return () => {
       socketRef.current?.disconnect();
       socketRef.current = null;
     };
-  }, [backendUrl]);
+  }, [socketUrl]);
 
   const fetchTestimonials = async () => {
     setTestimonial(dummyTestimonial as Testimonial[]);
