@@ -11,8 +11,6 @@ import cookieParser from "cookie-parser";
 import authRouter from "./routes/authRoutes.js";
 import adminRouter from "./routes/adminRoutes.js";
 import courseRouter from "./routes/courseRoute.js";
-
-
 import helmet from "helmet";
 import compression from "compression";
 import rateLimit from "express-rate-limit";
@@ -41,7 +39,7 @@ app.use('/api', limiter);
 // Allowed Origins handling
 const frontendUrls = process.env.CORS_ALLOWED_ORIGINS
   ? process.env.CORS_ALLOWED_ORIGINS.split(',')
-  : ["http://localhost:5173", "http://localhost:5174"];
+  : ["http://localhost:5173", "http://localhost:5174", "http://localhost:8080"];
 
 app.use(express.json({
   limit: '100mb',
@@ -128,7 +126,3 @@ async function start() {
 }
 
 start();
-//api end point
-
-// ...existing code moved into start()
-// Triggering nodemon restart
