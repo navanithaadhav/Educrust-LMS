@@ -41,3 +41,37 @@ jobs:
 
     - name: Test Docker Compose Build
       run: docker compose build
+
+
+  # ===============================
+  # 🚀 CD - AUTO DEPLOY TO AWS EC2
+  # ===============================
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ubuntu
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          cd ~/Educrust-LMS
+          git pull origin main
+
+          echo "🚀 Deploy Backend"
+          cd Server
+          npm install --legacy-peer-deps
+          pm2 restart educrust-api || pm2 start npm --name educrust-api -- start
+
+          echo "🎨 Deploy Frontend"
+          cd ../Client
+          npm install --legacy-peer-deps
+          npm run build
+
+          sudo rm -rf /var/www/educrusts/*
+          sudo cp -r dist/* /var/www/educrusts/
+
+          sudo systemctl reload nginx

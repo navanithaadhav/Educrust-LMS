@@ -52,6 +52,48 @@ const DocViewer: React.FC<DocViewerProps> = ({ playerData }) => {
         );
     }
 
+    const handleDownload = async (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        const url = playerData.lectureUrl;
+        const ext = playerData.resourceType === 'pdf' ? 'pdf' : (playerData.resourceType === 'ppt' ? 'ppt' : 'file');
+
+        try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+
+            let type = blob.type;
+            if (playerData.resourceType === 'pdf') type = 'application/pdf';
+            else if (playerData.resourceType === 'ppt') type = 'application/vnd.ms-powerpoint';
+
+            const customBlob = new Blob([blob], { type });
+            const blobUrl = window.URL.createObjectURL(customBlob);
+
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = `lecture-document.${ext}`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(blobUrl);
+        } catch (error) {
+            console.error("Direct fetch failed, falling back to URL download", error);
+
+            let downloadUrl = url;
+            if (downloadUrl.includes('res.cloudinary.com')) {
+                // Cloudinary syntax to force attachment
+                downloadUrl = downloadUrl.replace('/upload/', `/upload/fl_attachment:lecture-document/`);
+            }
+
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.download = `lecture-document.${ext}`;
+            link.target = '_blank';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    };
+
     if (playerData.resourceType === 'pdf' || playerData.resourceType === 'ppt') {
         return (
             <div className="flex flex-col h-full gap-4 p-4 box-border">
@@ -74,8 +116,7 @@ const DocViewer: React.FC<DocViewerProps> = ({ playerData }) => {
                     </div>
                     <a
                         href={playerData.lectureUrl}
-                        download
-                        target="_parent"
+                        onClick={handleDownload}
                         className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white text-[15px] font-semibold py-2.5 px-6 rounded-xl inline-flex items-center justify-center gap-2.5 transition-all shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 hover:-translate-y-0.5 cursor-pointer"
                     >
                         <DownloadCloud size={19} strokeWidth={2.5} />
