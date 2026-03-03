@@ -32,6 +32,7 @@ const AdminAddCourse = () => {
     const [chapters, setChapters] = useState<UIChapter[]>([]);
     const [showLecturePopup, setShowLecturePopup] = useState(false);
     const [currentChapterId, setCurrentChapterId] = useState<string | null>(null);
+    const [currentLectureIndex, setCurrentLectureIndex] = useState<number | null>(null);
     const [courseCategory, setCourseCategory] = useState("Others");
 
     const [educators, setEducators] = useState<any[]>([]);
@@ -56,9 +57,16 @@ const AdminAddCourse = () => {
         lectureTitle: string;
         lectureDuration: string;
         lectureUrl: string;
+        publicId?: string;
         isPreviewFree: boolean;
         lectureContent: string;
-        resourceType: 'video' | 'pdf' | 'ppt' | 'html-file';
+        resourceType: 'video' | 'pdf' | 'ppt' | 'html-file' | 'quiz';
+        questions?: {
+            questionId: string;
+            question: string;
+            options: string[];
+            correctAnswer: string;
+        }[];
     }>({
         lectureTitle: "",
         lectureDuration: "",
@@ -66,9 +74,11 @@ const AdminAddCourse = () => {
         isPreviewFree: false,
         lectureContent: "",
         resourceType: "video",
+        questions: [],
     });
 
     const [isUploading, setIsUploading] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
 
     const handleChapter = (action: 'add' | 'remove' | 'toggle', chapterId?: string) => {
         if (action === 'add') {
@@ -90,12 +100,41 @@ const AdminAddCourse = () => {
         }
     }
 
-    const handleLecture = (action: 'add' | 'remove', chapterId: string, lectureIndex?: number) => {
+    const handleLecture = (action: 'add' | 'remove' | 'edit', chapterId: string, lectureIndex?: number) => {
         if (action === 'add') {
+            setCurrentLectureIndex(null);
+            setLectureDetails({
+                lectureTitle: "",
+                lectureDuration: "",
+                lectureUrl: "",
+                publicId: "",
+                isPreviewFree: false,
+                lectureContent: "",
+                resourceType: "video",
+                questions: []
+            });
             openLecturePopup(chapterId);
             setShowLecturePopup(true);
         } else if (action === 'remove' && lectureIndex !== undefined) {
             setChapters(chapters.map(ch => ch.chapterId === chapterId ? { ...ch, chapterContent: ch.chapterContent.filter((_, index) => index !== lectureIndex) } : ch));
+        } else if (action === 'edit' && lectureIndex !== undefined) {
+            const chapter = chapters.find(ch => ch.chapterId === chapterId);
+            if (chapter) {
+                const lecture = chapter.chapterContent[lectureIndex];
+                setLectureDetails({
+                    lectureTitle: lecture.lectureTitle,
+                    lectureDuration: lecture.lectureDuration.toString(),
+                    lectureUrl: lecture.lectureUrl || "",
+                    publicId: (lecture as any).publicId || "",
+                    isPreviewFree: lecture.isPreviewFree,
+                    lectureContent: lecture.lectureContent || "",
+                    resourceType: (lecture.resourceType as 'video' | 'pdf' | 'ppt' | 'html-file' | 'quiz') || "video",
+                    questions: lecture.questions || []
+                });
+                setCurrentLectureIndex(lectureIndex);
+                setCurrentChapterId(chapterId);
+                setShowLecturePopup(true);
+            }
         }
     }
 
@@ -197,17 +236,42 @@ const AdminAddCourse = () => {
             return;
         }
 
-        setChapters(chapters.map((ch) => {
-            if (ch.chapterId === currentChapterId) {
-                const newLecture: Lecture = {
-                    ...lectureDetails,
-                    lectureOrder: ch.chapterContent.length > 0 ? (ch.chapterContent.slice(-1)[0].lectureOrder || 0) + 1 : 1,
-                    lectureId: uuidv4()
+        if (lectureDetails.resourceType !== 'quiz' && !lectureDetails.lectureUrl) {
+            toast.error("Please attach a file or enter a video URL");
+            return;
+        }
+
+        if (lectureDetails.resourceType === 'quiz' && (!lectureDetails.questions || lectureDetails.questions.length === 0)) {
+            toast.error("Please add at least one question for the quiz");
+            return;
+        }
+
+        if (currentLectureIndex !== null && currentChapterId) {
+            setChapters(chapters.map((ch) => {
+                if (ch.chapterId === currentChapterId) {
+                    const updatedContent = [...ch.chapterContent];
+                    updatedContent[currentLectureIndex] = {
+                        ...updatedContent[currentLectureIndex],
+                        ...lectureDetails,
+                        lectureId: updatedContent[currentLectureIndex].lectureId || uuidv4()
+                    };
+                    return { ...ch, chapterContent: updatedContent };
+                }
+                return ch;
+            }));
+        } else {
+            setChapters(chapters.map((ch) => {
+                if (ch.chapterId === currentChapterId) {
+                    const newLecture: Lecture = {
+                        ...lectureDetails,
+                        lectureOrder: ch.chapterContent.length > 0 ? (ch.chapterContent.slice(-1)[0].lectureOrder || 0) + 1 : 1,
+                        lectureId: uuidv4()
+                    };
+                    ch.chapterContent.push(newLecture)
                 };
-                ch.chapterContent.push(newLecture)
-            };
-            return ch
-        }));
+                return ch
+            }));
+        }
 
         setShowLecturePopup(false);
         setLectureDetails({
@@ -217,7 +281,9 @@ const AdminAddCourse = () => {
             isPreviewFree: false,
             lectureContent: "",
             resourceType: "video",
+            questions: []
         });
+        setCurrentLectureIndex(null);
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -374,7 +440,10 @@ const AdminAddCourse = () => {
                                             {chapter.chapterContent.map((lecture, lectureIndex) => (
                                                 <div key={lectureIndex} className="flex justify-between items-center mb-2">
                                                     <span>{lectureIndex + 1} {lecture.lectureTitle} - {lecture.lectureDuration} mins - <a href={lecture.lectureUrl} target="_blank" className="text-blue-500">Link</a> - {lecture.isPreviewFree ? 'Free Preview' : 'paid'}</span>
-                                                    <img src={assets.cross_icon} alt="cross_icon" onClick={() => handleLecture('remove', chapter.chapterId, lectureIndex)} className="cursor-pointer" />
+                                                    <div className="flex items-center gap-2">
+                                                        <span onClick={() => handleLecture('edit', chapter.chapterId, lectureIndex)} className="text-blue-500 cursor-pointer hover:underline">Edit</span>
+                                                        <img src={assets.cross_icon} alt="cross_icon" onClick={() => handleLecture('remove', chapter.chapterId, lectureIndex)} className="cursor-pointer" />
+                                                    </div>
                                                 </div>
                                             ))}
                                             <div onClick={() => handleLecture('add', chapter.chapterId)} className="inline-flex bg-gray-100 p-2 rounded cursor-pointer mt-2">+ Add Lecture</div>
@@ -387,7 +456,7 @@ const AdminAddCourse = () => {
                         {showLecturePopup && (
                             <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
                                 <div className="bg-white text-gray-700 rounded p-6 w-[1000px] space-y-3 relative overflow-y-auto max-h-[90vh]">
-                                    <h2 className="font-semibold">Add Lecture</h2>
+                                    <h2 className="font-semibold">{currentLectureIndex !== null ? 'Edit Lecture' : 'Add Lecture'}</h2>
                                     <div className="mb-2"><p>Lecture Title</p><input type="text" value={lectureDetails.lectureTitle} onChange={(e) => setLectureDetails({ ...lectureDetails, lectureTitle: e.target.value })} className="mt-1 block w-full border rounded px-2 py-1" /></div>
                                     <div className="mb-2"><p>Duration (minits)</p><input type="text" value={lectureDetails.lectureDuration} onChange={(e) => setLectureDetails({ ...lectureDetails, lectureDuration: e.target.value })} className="mt-1 block w-full border rounded px-2 py-1" /></div>
 
@@ -403,10 +472,98 @@ const AdminAddCourse = () => {
                                             <option value="pdf">PDF Document</option>
                                             <option value="ppt">Presentation (PPT)</option>
                                             <option value="html-file">HTML File</option>
+                                            <option value="quiz">Quiz</option>
                                         </select>
                                     </div>
 
-                                    {lectureDetails.resourceType === 'video' ? (
+                                    {lectureDetails.resourceType === 'quiz' ? (
+                                        <div className="mb-2">
+                                            <div className="flex justify-between items-center mb-2">
+                                                <p>Quiz Questions</p>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const newQuestions = [
+                                                            ...(lectureDetails.questions || []),
+                                                            {
+                                                                questionId: uuidv4(),
+                                                                question: '',
+                                                                options: ['', '', '', ''],
+                                                                correctAnswer: ''
+                                                            }
+                                                        ];
+                                                        setLectureDetails({ ...lectureDetails, questions: newQuestions });
+                                                    }}
+                                                    className="text-sm bg-blue-100 text-blue-600 px-2 py-1 rounded"
+                                                >
+                                                    + Add Question
+                                                </button>
+                                            </div>
+
+                                            {(lectureDetails.questions || []).map((q, qIndex) => (
+                                                <div key={q.questionId} className="border p-3 rounded mb-3 bg-gray-50">
+                                                    <div className="flex justify-between mb-2">
+                                                        <span className="font-medium">Question {qIndex + 1}</span>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                const newQuestions = lectureDetails.questions?.filter((_, i) => i !== qIndex);
+                                                                setLectureDetails({ ...lectureDetails, questions: newQuestions });
+                                                            }}
+                                                            className="text-red-500 text-xs"
+                                                        >
+                                                            Remove
+                                                        </button>
+                                                    </div>
+
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Enter Question"
+                                                        value={q.question}
+                                                        onChange={(e) => {
+                                                            const newQuestions = [...(lectureDetails.questions || [])];
+                                                            newQuestions[qIndex].question = e.target.value;
+                                                            setLectureDetails({ ...lectureDetails, questions: newQuestions });
+                                                        }}
+                                                        className="w-full border rounded px-2 py-1 mb-2 text-sm"
+                                                    />
+
+                                                    <div className="space-y-2 pl-2">
+                                                        {q.options.map((opt, optIndex) => (
+                                                            <div key={optIndex} className="flex gap-2 items-center">
+                                                                <input
+                                                                    type="radio"
+                                                                    name={`correct-${q.questionId}`}
+                                                                    checked={q.correctAnswer === opt && opt !== ''}
+                                                                    onChange={() => {
+                                                                        const newQuestions = [...(lectureDetails.questions || [])];
+                                                                        newQuestions[qIndex].correctAnswer = opt;
+                                                                        setLectureDetails({ ...lectureDetails, questions: newQuestions });
+                                                                    }}
+                                                                    title="Mark as correct answer"
+                                                                    disabled={opt === ''}
+                                                                />
+                                                                <input
+                                                                    type="text"
+                                                                    placeholder={`Option ${optIndex + 1}`}
+                                                                    value={opt}
+                                                                    onChange={(e) => {
+                                                                        const newQuestions = [...(lectureDetails.questions || [])];
+                                                                        newQuestions[qIndex].options[optIndex] = e.target.value;
+                                                                        if (q.correctAnswer === opt) {
+                                                                            newQuestions[qIndex].correctAnswer = e.target.value;
+                                                                        }
+                                                                        setLectureDetails({ ...lectureDetails, questions: newQuestions });
+                                                                    }}
+                                                                    className="w-full border rounded px-2 py-1 text-sm bg-white"
+                                                                />
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : lectureDetails.resourceType === 'video' ? (
                                         <div className="mb-2"><p>Lecture URL</p><input type="text" value={lectureDetails.lectureUrl} onChange={(e) => setLectureDetails({ ...lectureDetails, lectureUrl: e.target.value })} className="mt-1 block w-full border rounded px-2 py-1" /></div>
                                     ) : (
                                         <div className="mb-2">
@@ -421,6 +578,7 @@ const AdminAddCourse = () => {
                                                 onChange={async (e) => {
                                                     const file = e.target.files?.[0];
                                                     if (file) {
+                                                        setUploadProgress(0);
                                                         setIsUploading(true);
                                                         const formData = new FormData();
                                                         formData.append('file', file);
@@ -428,7 +586,11 @@ const AdminAddCourse = () => {
 
                                                         try {
                                                             const { data } = await axios.post(backendUrl + '/api/admin/upload-resource', formData, {
-                                                                headers: { 'Content-Type': 'multipart/form-data' }
+                                                                headers: { 'Content-Type': 'multipart/form-data' },
+                                                                onUploadProgress: (progressEvent) => {
+                                                                    const percentCompleted = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 100));
+                                                                    setUploadProgress(percentCompleted);
+                                                                }
                                                             });
                                                             if (data.success) {
                                                                 setLectureDetails({ ...lectureDetails, lectureUrl: data.url });
@@ -445,8 +607,13 @@ const AdminAddCourse = () => {
                                                 }}
                                                 className="mt-1 block w-full border rounded px-2 py-1"
                                             />
-                                            {isUploading && <p className="text-sm text-blue-500">Uploading...</p>}
-                                            {lectureDetails.lectureUrl && !isUploading && <p className="text-sm text-green-500">File attached: {lectureDetails.lectureUrl}</p>}
+                                            {isUploading && (
+                                                <div className="mt-2 w-full bg-gray-200 rounded-full h-2.5">
+                                                    <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: `${uploadProgress}%` }}></div>
+                                                    <p className="text-xs text-center mt-1">{uploadProgress}% Uploaded</p>
+                                                </div>
+                                            )}
+                                            {lectureDetails.lectureUrl && !isUploading && <p className="text-sm text-green-500 mt-2">File attached: <a href={lectureDetails.lectureUrl} target="_blank" rel="noopener noreferrer" className="underline">Preview</a></p>}
                                         </div>
                                     )}
 
@@ -475,7 +642,7 @@ const AdminAddCourse = () => {
                                     </div>
 
                                     <div className="flex items-center gap-2 mt-12 mb-4"><p>Is Priview Free?</p><input type="checkbox" checked={lectureDetails.isPreviewFree} className="mt-1 scale-125" onChange={(e) => setLectureDetails({ ...lectureDetails, isPreviewFree: e.target.checked })} /></div>
-                                    <button type="button" onClick={addLecture} className="bg-blue-500 text-white px-4 py-2 rounded">Add</button>
+                                    <button type="button" onClick={addLecture} disabled={isUploading} className="bg-blue-500 text-white px-4 py-2 rounded disabled:bg-gray-400">{currentLectureIndex !== null ? 'Update' : 'Add'}</button>
                                     <img src={assets.cross_icon} alt="cross_icon" onClick={() => setShowLecturePopup(false)} className="absolute top-4 right-4 w-4 cursor-pointer" />
                                 </div>
                             </div>

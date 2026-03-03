@@ -61,17 +61,17 @@ jobs:
           cd ~/Educrust-LMS
           git pull origin main
 
-          echo "🚀 Deploy Backend"
+          echo "Deploy Backend"
           cd Server
           npm install --legacy-peer-deps
           pm2 restart educrust-api || pm2 start npm --name educrust-api -- start
 
-          echo "🎨 Deploy Frontend"
+          echo "Deploy Frontend"
           cd ../Client
           npm install --legacy-peer-deps
           npm run build
 
           sudo rm -rf /var/www/educrusts/*
-          sudo cp -r dist/* /var/www/educrusts/
+          sudo cp -r ~/Educrust-LMS/Client/dist/* /var/www/educrusts/
 
           sudo systemctl reload nginx
